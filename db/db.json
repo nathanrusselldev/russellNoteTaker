@@ -1,6 +1,14 @@
 [
     {
-        "title":"Test Title",
-        "text":"Test text"
+        "title": "This is a test title, click me to show more information.",
+        "text": "You can create a new note to save into this tool using the '+' button in the upper right-hand part of the scree. Give it a try!"
+    },
+    {
+        "title": "YOYOYO",
+        "text": "YAYAYA"
+    },
+    {
+        "title": "yoyyo",
+        "text": "YAYAYA"
     }
 ]

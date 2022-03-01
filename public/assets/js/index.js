@@ -13,6 +13,7 @@ if (window.location.pathname === '/notes') {
 }
 
 // Show an element
+
 const show = (elem) => {
   elem.style.display = 'inline';
 };
@@ -31,8 +32,9 @@ const getNotes = () =>
     headers: {
       'Content-Type': 'application/json',
     },
+    
   });
-
+     
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -52,8 +54,7 @@ const deleteNote = (id) =>
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
-
-  if (activeNote.id) {
+  if (activeNote.title) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
@@ -134,6 +135,7 @@ const renderNoteList = async (notes) => {
     spanEl.classList.add('list-item-title');
     spanEl.innerText = text;
     spanEl.addEventListener('click', handleNoteView);
+
 
     liEl.append(spanEl);
 

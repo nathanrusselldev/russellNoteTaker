@@ -1,0 +1,66 @@
+const express = require('express')
+const path = require('path')
+const fs = require('fs')
+const noteData = require('./db/db.json');
+const noteId = require('./helpers/noteId');
+const app = express();
+
+// Dedicating a port to the server.
+
+const PORT = 3001
+
+// Implementing middleware.
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static('public'));
+
+// Setting up HTML routes
+
+app.get('/', (req,res) => res.sendFile(path.join(__dirname, './public/index.html')));
+
+app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, './public/notes.html')));
+
+// Setting up get method routes
+
+app.get('/api/notes', (req, res) =>  res.json(noteData));
+  
+app.post('/api/notes', (req,res) => {
+  
+  console.log(`${req.method} request received to add a review`);
+  const {title , text} = req.body;
+  const newNote = {
+    title,
+    text
+  };
+
+  fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+
+    const parsedNotes = JSON.parse(data);
+    parsedNotes.push(newNote);
+    fs.writeFile('./db/db.json', JSON.stringify(parsedNotes, null, 4), (err) => {
+    console.log(err)
+    res.json(noteData)
+    
+    });
+
+  });
+});
+
+// Catch-all route
+
+  app.get('*', (req, res) => res.sendFile(path.join(__dirname, './public/index.html')));
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(PORT, () =>
+  console.log(`This server is listening on http://localhost:${PORT}`));

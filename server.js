@@ -23,7 +23,7 @@ app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, './public/note
 
 // Setting up get method routes
 
-app.get('/api/notes', (req, res) =>  res.json(noteData));
+app.get('/api/notes', (req, res) =>  fs.readFile('./db/db.json', 'utf-8', (err, data) => res.json(JSON.parse(data))));
   
 app.post('/api/notes', (req,res) => {
   
@@ -32,6 +32,7 @@ app.post('/api/notes', (req,res) => {
   const newNote = {
     title,
     text,
+    id:noteId(500)
   };
 
   fs.readFile('./db/db.json', 'utf-8', (err, data) => {
@@ -40,7 +41,7 @@ app.post('/api/notes', (req,res) => {
     parsedNotes.push(newNote);
     fs.writeFile('./db/db.json', JSON.stringify(parsedNotes, null, 4), (err) => {
       console.log(err)
-      res.json(parsedNotes)  
+      res.json(parsedNotes)
     });
   });
 });

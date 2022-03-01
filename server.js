@@ -7,7 +7,7 @@ const app = express();
 
 // Dedicating a port to the server.
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 // Implementing middleware.
 
@@ -27,11 +27,11 @@ app.get('/api/notes', (req, res) =>  res.json(noteData));
   
 app.post('/api/notes', (req,res) => {
   
-  console.log(`${req.method} request received to add a review`);
+  console.log(`${req.method} request received to add a note.`);
   const {title , text} = req.body;
   const newNote = {
     title,
-    text
+    text,
   };
 
   fs.readFile('./db/db.json', 'utf-8', (err, data) => {
@@ -39,28 +39,18 @@ app.post('/api/notes', (req,res) => {
     const parsedNotes = JSON.parse(data);
     parsedNotes.push(newNote);
     fs.writeFile('./db/db.json', JSON.stringify(parsedNotes, null, 4), (err) => {
-    console.log(err)
-    res.json(noteData)
-    
+      console.log(err)
+      res.json(parsedNotes)  
     });
-
   });
 });
+
 
 // Catch-all route
 
   app.get('*', (req, res) => res.sendFile(path.join(__dirname, './public/index.html')));
 
-
-
-
-
-
-
-
-
-
-
+// Node Listener to ensure my server is running. 
 
 app.listen(PORT, () =>
   console.log(`This server is listening on http://localhost:${PORT}`));
